@@ -3,11 +3,22 @@ dotenv.config()
 import express from "express"
 const app = express()
 const port = process.env.PORT
+import connectdb from './src/db/index.js'
+import userRouter from "./src/routes/user.routes.js"
+
+app.use(express.json())
+app.use('/user', userRouter)
 
 app.get('/', (req, res) => {
-    console.log("SERVER IS RUNNING AT PORT 8000");
+    res.send("SERVER IS RUNNING AT PORT 8000");
 })
 
-app.listen(port, () => {
-    console.log("SERVER IS RUNNING AT PORT", port);
-})
+connectdb()
+    .then(() => {
+        app.listen(port, () => {
+            console.log("SERVER IS RUNNING AT PORT", port);
+        })
+    })
+    .catch((err) => {
+        console.log(err);
+    })
