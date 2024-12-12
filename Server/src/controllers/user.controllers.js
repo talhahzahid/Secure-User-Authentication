@@ -62,7 +62,4 @@ const logOut = async (req, res) => {
 }
 
 
-
-
-
 export { signUp, loginUser, logOut }
