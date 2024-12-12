@@ -3,7 +3,9 @@ import jwt from "jsonwebtoken"
 import users from "../models/user.models.js";
 
 const generateTokenFromUser = (user) => {
-    return jwt.sign({ email: user.email }, process.env.JWT_SECRET_REFRESH)
+    return jwt.sign({ email: user.email }, process.env.JWT_SECRET_REFRESH, {
+        expiresIn: '3m'
+    })
 }
 
 
@@ -39,6 +41,13 @@ const loginUser = async (req, res) => {
         if (!validKey) return res.status(400).json({ message: "Incorrect password" })
         // generate token from user 
         const token = generateTokenFromUser(user)
+        // cookies in user browser 
+        res.cookie("refreshToken", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None",
+            maxAge: 3 * 60 * 1000,
+        });
         res.json({ message: "Login successfully", token })
     } catch (error) {
         console.log(error);
@@ -46,8 +55,14 @@ const loginUser = async (req, res) => {
     }
 }
 
+// logout user 
+const logOut = async (req, res) => {
+    await res.clearCookie("refreshToken")
+    res.json({ message: "logOut successfully" })
+}
 
 
 
 
-export { signUp, loginUser }
+
+export { signUp, loginUser, logOut }

@@ -5,8 +5,10 @@ const app = express()
 const port = process.env.PORT
 import connectdb from './src/db/index.js'
 import userRouter from "./src/routes/user.routes.js"
+import cookieParser from "cookie-parser"
 
 app.use(express.json())
+app.use(cookieParser())
 app.use('/user', userRouter)
 
 app.get('/', (req, res) => {
