@@ -1,8 +1,9 @@
 import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios
 
 const Signup = () => {
+  // get value from form
   const fullname = useRef();
   const email = useRef();
   const password = useRef();
@@ -23,13 +24,17 @@ const Signup = () => {
         email: email.current.value,
         password: password.current.value,
       });
-      console.log("oki");
-      // if (response.status === 200) {
-      //   // Successfully signed up, navigate to login page
-      //   navigate("/login");
-      // }
+      console.log(response);
+      // Clear form inputs
+      fullname.current.value = "";
+      email.current.value = "";
+      password.current.value = "";
+
+      // If signup is successful, navigate to the login page
+      if (response.status === 200) {
+        navigate("/login");
+      }
     } catch (error) {
-      // Handle errors (e.g., bad request, server error)
       if (error.response) {
         setError(error.response.data.message || "Something went wrong!");
       } else {
@@ -44,9 +49,9 @@ const Signup = () => {
     <div className="flex justify-center items-center h-[90vh] bg-slate-200">
       <form
         onSubmit={signUpHandler}
-        className="flex justify-center items-center flex-col space-y-4 bg-white p-8 rounded-lg shadow-md"
+        className="flex justify-center items-center flex-col space-y-4  bg-[#153131] w-full sm:w-[24rem] h-auto p-6 rounded-lg"
       >
-        <h1 className="text-xl font-semibold">REGISTER</h1>
+        <h1 className="text-xl font-semibold text-white">REGISTER</h1>
 
         {error && (
           <div className="text-red-500 text-sm mb-2">
@@ -57,30 +62,27 @@ const Signup = () => {
         <input
           type="text"
           placeholder="Enter your full name"
-          className="input input-bordered w-[100%] max-w-xs"
+          className="input input-bordered w-full max-w-xs"
           ref={fullname}
         />
         <input
           type="email"
           placeholder="Enter your email"
-          className="input input-bordered w-[100%] max-w-xs"
+          className="input input-bordered w-full max-w-xs"
           ref={email}
         />
         <input
           type="password"
           placeholder="Enter your password"
-          className="input input-bordered w-[100%] max-w-xs"
+          className="input input-bordered w-full max-w-xs"
           ref={password}
         />
-        <button
-          type="submit"
-          className={`btn ${
-            loading ? "btn-disabled" : "btn-primary"
-          } w-[100%] max-w-xs`}
-          disabled={loading}
-        >
-          {loading ? "Signing Up..." : "Signup"}
+        <button type="submit" className="btn btn-primary text-white">
+          {loading ? "SIGNUP..." : "SIGNUP"}
         </button>
+        <Link to="/signin" className="text-blue-600 underline">
+          Already Have An Acoout
+        </Link>
       </form>
     </div>
   );
