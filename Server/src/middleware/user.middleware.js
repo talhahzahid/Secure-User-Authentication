@@ -1,23 +1,18 @@
-import jwt from "jsonwebtoken"
 
-const checkTokenFromUser = (req, res) => {
+import jwt from "jsonwebtoken";
+
+const checkTokenFromUser = (req, res, next) => {
     const token = req.cookies.refreshToken;
     if (!token) {
-        return res.status(400).json({ message: "Token Required" })
+        return res.status(401).json({ message: "Token required" });
     }
     jwt.verify(token, process.env.JWT_SECRET_REFRESH, (err, user) => {
         if (err) {
-            return res.status(400).json({ message: "Ivalid Token" })
+            return res.status(403).json({ message: "Invalid token" });
         }
-        req.user = user
-        res.json({
-            message: "User authenticated",
-            user: req.user,
-            token
-        });
+        req.user = user;
+        next();
     });
-}
+};
 
-
-
-export default { checkTokenFromUser }
+export default checkTokenFromUser;
