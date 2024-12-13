@@ -22,7 +22,7 @@ const signUp = async (req, res) => {
             email,
             password
         });
-        res.status(201).json({ message: "You are registered successfully" });
+        res.status(201).json({ message: "You are registered successfully" ,  });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "An error occurred during registration" });
@@ -32,8 +32,8 @@ const signUp = async (req, res) => {
 // login user
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
-    if (!email) return res.status(400).json({ message: "email is required" });
-    if (!password) return res.status(400).json({ message: "password is required" });
+    if (!email) return res.status(400).json({ message: "Email is required" });
+    if (!password) return res.status(400).json({ message: "Password is required" });
     try {
         const user = await users.findOne({ email })
         if (!user) return res.status(400).json({ message: "no user exits" });
