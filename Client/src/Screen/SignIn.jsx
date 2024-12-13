@@ -7,15 +7,13 @@ const Signup = () => {
   const password = useRef();
   const navigate = useNavigate();
 
+  // loading
   const [Error, setError] = useState("");
   const [loading, setLoadind] = useState(false);
 
   const signUpHandler = async (event) => {
     event.preventDefault();
-
-    // setError("");
     setLoadind(true);
-
     try {
       const response = await axios.post(
         "http://localhost:8000/user/signin",
@@ -28,6 +26,9 @@ const Signup = () => {
         }
       );
       console.log("Login Successfully", response);
+      email.current.value = "";
+      password.current.value = "";
+      navigate("/");
     } catch (error) {
       if (error.response) {
         setError(error.response.data.message) || "wrong";
@@ -46,7 +47,9 @@ const Signup = () => {
         onSubmit={signUpHandler}
         className="flex justify-center items-center flex-col space-y-4 bg-[#153131]  w-full sm:w-[24rem] h-auto p-6 rounded-lg"
       >
-        <h1 className="text-xl font-semibold sm:text-2xl text-white">Sign In</h1>
+        <h1 className="text-xl font-semibold sm:text-2xl text-white">
+          Sign In
+        </h1>
         {Error && (
           <div className="text-red-500 text-sm mb-2">
             <h1 className="text-xl font-semibold">{Error}</h1>

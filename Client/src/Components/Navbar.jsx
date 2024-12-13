@@ -1,7 +1,28 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate(); // React Router hook for navigating
+  const logout = async () => {
+    // Call the logout API
+    await fetch("http://localhost:8000/user/logout", {
+      method: "GET", // or 'POST' depending on your backend
+      credentials: "include", // Include cookies for authentication/session handling
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Successfully logged out");
+          // Redirect user to the login page
+          navigate("/signin");
+        } else {
+          console.log("Logout failed");
+        }
+      })
+      .catch((error) => {
+        console.error("Error during logout:", error);
+      });
+  };
+
   return (
     <>
       <div className="navbar bg-base-100">
@@ -51,6 +72,9 @@ const Navbar = () => {
           <Link to="/signin" className="btn btn-primary">
             SignIn
           </Link>
+          <button className="btn btn-error" onClick={logout}>
+            LogOut
+          </button>
         </div>
       </div>
     </>

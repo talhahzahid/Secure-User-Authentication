@@ -14,10 +14,7 @@ const Signup = () => {
 
   const signUpHandler = async (event) => {
     event.preventDefault();
-
-    setError("");
     setLoading(true);
-
     try {
       const response = await axios.post("http://localhost:8000/user/signup", {
         fullname: fullname.current.value,
@@ -32,7 +29,7 @@ const Signup = () => {
 
       // If signup is successful, navigate to the login page
       if (response.status === 200) {
-        navigate("/login");
+        navigate("/signin");
       }
     } catch (error) {
       if (error.response) {
